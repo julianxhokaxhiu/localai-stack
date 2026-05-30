@@ -1,0 +1,11 @@
+{
+  "llamacpp": {
+    "backend": "cpu"
+  },
+  "whispercpp": {
+    "backend": "cpu"
+  },
+  "sdcpp": {
+    "backend": "cpu"
+  }
+}

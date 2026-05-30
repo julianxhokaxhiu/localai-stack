@@ -1,0 +1,14 @@
+services:
+  lemonade:
+    command:
+      - sh
+      - -lc
+      - |
+        if [ ! -s /root/.cache/lemonade/config.json ]; then
+          cp /root/.cache/lemonade/.seed-config.json /root/.cache/lemonade/config.json
+        fi
+        exec ./lemond --host 0.0.0.0
+    volumes:
+      - ./lemonade-configs/vulkan.json:/root/.cache/lemonade/.seed-config.json:ro
+    devices:
+      - /dev/dri

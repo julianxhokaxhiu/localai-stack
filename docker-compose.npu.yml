@@ -1,0 +1,4 @@
+services:
+  lemonade:
+    devices:
+      - /dev/accel/accel0:/dev/accel/accel0

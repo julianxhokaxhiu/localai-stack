@@ -1,0 +1,11 @@
+{
+  "llamacpp": {
+    "backend": "vulkan"
+  },
+  "whispercpp": {
+    "backend": "vulkan"
+  },
+  "sdcpp": {
+    "backend": "vulkan"
+  }
+}

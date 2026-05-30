@@ -1,0 +1,9 @@
+services:
+  lemonade:
+    devices:
+      - /dev/dxg
+    volumes:
+      - /usr/lib/wsl/lib:/usr/lib/wsl/lib:ro
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:git-359590c-cuda

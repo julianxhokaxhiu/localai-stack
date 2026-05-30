@@ -1,0 +1,59 @@
+services:
+  lemonade:
+    image: ghcr.io/lemonade-sdk/lemonade-server:v10.7.0
+    ports:
+      - "13305:13305"
+    volumes:
+      # Persist downloaded models
+      - lemonade-cache:/root/.cache/huggingface
+      # Persist llama binaries
+      - lemonade-llama:/opt/lemonade/llama
+      # Persist model options and other backend binaries
+      - lemonade-recipe:/root/.cache/lemonade
+    restart: unless-stopped
+
+  openwebui:
+    # Use this version until https://github.com/open-webui/open-webui/issues/25585 is solved
+    image: ghcr.io/open-webui/open-webui:git-359590c-slim
+    environment:
+      OPENAI_API_BASE_URL: http://lemonade:13305/api/v1
+      ENABLE_OLLAMA_API: False
+      ENABLE_IMAGE_GENERATION: True
+      ENABLE_WEB_SEARCH: True
+      WEB_SEARCH_ENGINE: searxng
+      WEB_SEARCH_RESULT_COUNT: 10
+      WEB_SEARCH_CONCURRENT_REQUESTS: 1
+      SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
+      SEARXNG_LANGUAGE: all
+      AIOHTTP_CLIENT_ALLOW_REDIRECTS: True
+      USER_AGENT: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0"
+    ports:
+      - "80:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    restart: unless-stopped
+
+  searxng:
+    image: docker.io/searxng/searxng:2026.6.13-2e10a2f61
+    environment:
+      SEARXNG_PORT: 8080
+      SEARXNG_BIND_ADDRESS: 0.0.0.0
+      SEARXNG_BASE_URL: http://searxng
+    volumes:
+      - ./searxng-config/:/etc/searxng:ro
+      - searxng-data:/var/cache/searxng/
+    cap_drop:
+      - ALL
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: unless-stopped
+
+volumes:
+  lemonade-cache:
+  lemonade-llama:
+  lemonade-recipe:
+  open-webui:
+  searxng-data:

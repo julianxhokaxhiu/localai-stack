@@ -1,0 +1,11 @@
+{
+  "llamacpp": {
+    "backend": "rocm"
+  },
+  "whispercpp": {
+    "backend": "rocm"
+  },
+  "sdcpp": {
+    "backend": "rocm"
+  }
+}

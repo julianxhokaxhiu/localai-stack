@@ -1,0 +1,6 @@
+services:
+  lemonade:
+    gpus: all
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:git-359590c-cuda

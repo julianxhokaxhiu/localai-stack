@@ -1,0 +1,10 @@
+services:
+  lemonade:
+    environment:
+      HSA_ENABLE_DXG_DETECTION: 1
+      LD_LIBRARY_PATH: /opt/rocm/lib:/opt/rocm/lib/rocm_sysdeps/lib:/usr/lib/wsl/lib:/usr/lib
+    devices:
+      - /dev/dxg
+    volumes:
+      - /usr/lib/wsl/lib:/usr/lib/wsl/lib:ro
+      - /opt/rocm/lib:/opt/rocm/lib:ro

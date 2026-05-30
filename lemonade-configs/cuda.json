@@ -1,0 +1,8 @@
+{
+  "llamacpp": {
+    "backend": "cuda"
+  },
+  "sdcpp": {
+    "backend": "cuda"
+  }
+}
