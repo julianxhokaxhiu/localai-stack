@@ -11,4 +11,5 @@ services:
     volumes:
       - ./lemonade-configs/rocm.json:/root/.cache/lemonade/.seed-config.json:ro
     devices:
+      - /dev/dri
       - /dev/kfd
