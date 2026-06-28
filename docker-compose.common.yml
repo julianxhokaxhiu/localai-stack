@@ -26,7 +26,7 @@ services:
       SEARXNG_QUERY_URL: http://searxng:8080/search?q=<query>
       SEARXNG_LANGUAGE: all
       AIOHTTP_CLIENT_ALLOW_REDIRECTS: True
-      USER_AGENT: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0"
+      USER_AGENT: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0"
     ports:
       - "80:8080"
     volumes:
