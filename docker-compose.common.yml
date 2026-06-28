@@ -13,8 +13,8 @@ services:
     restart: unless-stopped
 
   openwebui:
-    # Use this version until https://github.com/open-webui/open-webui/issues/25585 is solved
-    image: ghcr.io/open-webui/open-webui:git-359590c-slim
+    # Make sure to set Function Calling to NATIVE, see https://github.com/open-webui/open-webui/issues/25585#issuecomment-4793385763
+    image: ghcr.io/open-webui/open-webui:v0.9.6-slim
     environment:
       OPENAI_API_BASE_URL: http://lemonade:13305/api/v1
       ENABLE_OLLAMA_API: False
