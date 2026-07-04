@@ -17,6 +17,9 @@ services:
     image: ghcr.io/open-webui/open-webui:v0.10.2-slim
     environment:
       OPENAI_API_BASE_URL: http://lemonade:13305/api/v1
+      IMAGES_OPENAI_API_BASE_URL: http://lemonade:13305/api/v1
+      IMAGES_OPENAI_API_KEY: "-"
+      IMAGE_GENERATION_MODEL: "SDXL-Turbo"
       ENABLE_OLLAMA_API: False
       ENABLE_IMAGE_GENERATION: True
       ENABLE_WEB_SEARCH: True
