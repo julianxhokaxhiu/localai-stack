@@ -1,7 +1,3 @@
-# WIP! This project is in early alpha stages, currently being refactored until it has a final shape.
-
----
-
 # localai-stack
 
 Docker Compose stack for Lemonade Server/Open WebUI/SearXNG with support for CPUs, AMD, Nvidia, Intel GPUs and NPU hardware.
@@ -230,4 +226,4 @@ make purge
 When the stack is up:
 
 - OpenWebUI is exposed on `http://localhost`
-- Lemonade UI is exposed on `http://lemonade:13305/`
+- Lemonade UI is exposed on `http://localhost:13305/`
