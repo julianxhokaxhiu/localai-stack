@@ -1,8 +1,20 @@
 {
+  "acestep": {
+    "backend": "cuda"
+  },
   "llamacpp": {
     "backend": "cuda"
   },
+  "openmoss": {
+    "backend": "cuda"
+  },
   "sdcpp": {
+    "backend": "cuda"
+  },
+  "thinksound": {
+    "backend": "cuda"
+  },
+  "trellis": {
     "backend": "cuda"
   }
 }

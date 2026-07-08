@@ -1,11 +1,23 @@
 {
+  "acestep": {
+    "backend": "vulkan"
+  },
   "llamacpp": {
     "backend": "vulkan"
   },
-  "whispercpp": {
+  "openmoss": {
     "backend": "vulkan"
   },
   "sdcpp": {
+    "backend": "vulkan"
+  },
+  "thinksound": {
+    "backend": "vulkan"
+  },
+  "trellis": {
+    "backend": "vulkan"
+  },
+  "whispercpp": {
     "backend": "vulkan"
   }
 }

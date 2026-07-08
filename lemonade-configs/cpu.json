@@ -1,11 +1,17 @@
 {
+  "kokoro": {
+    "backend": "cpu"
+  },
   "llamacpp": {
     "backend": "cpu"
   },
-  "whispercpp": {
+  "moonshine": {
     "backend": "cpu"
   },
   "sdcpp": {
+    "backend": "cpu"
+  },
+  "whispercpp": {
     "backend": "cpu"
   }
 }

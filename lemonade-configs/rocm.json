@@ -1,11 +1,26 @@
 {
+  "acestep": {
+    "backend": "rocm"
+  },
   "llamacpp": {
     "backend": "rocm"
   },
-  "whispercpp": {
+  "openmoss": {
     "backend": "rocm"
   },
   "sdcpp": {
+    "backend": "rocm"
+  },
+  "thinksound": {
+    "backend": "rocm"
+  },
+  "trellis": {
+    "backend": "rocm"
+  },
+  "vllm": {
+    "backend": "rocm"
+  },
+  "whispercpp": {
     "backend": "rocm"
   }
 }
