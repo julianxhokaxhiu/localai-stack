@@ -21,6 +21,7 @@ NPU = -f docker-compose.npu.yml
 .SILENT:
 
 .PHONY: help pull ps purge \
+	update-lemonade-configs \
 	up-cpu down-cpu logs-cpu config-cpu \
 	up-amd-rocm down-amd-rocm logs-amd-rocm config-amd-rocm \
 	up-amd-vulkan down-amd-vulkan logs-amd-vulkan config-amd-vulkan \
@@ -59,6 +60,10 @@ help:
 	@echo "  up-wsl-rocm | up-wsl-vulkan"
 	@echo "  up-wsl-cuda"
 	@echo "  up-wsl-rocm-npu | up-wsl-vulkan-npu"
+	@echo "  update-lemonade-configs"
+
+update-lemonade-configs:
+	./utils/update_lemonade_configs.sh
 
 pull:
 	$(COMPOSE) $(BASE) pull
