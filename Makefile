@@ -22,6 +22,7 @@ NPU = -f docker-compose.npu.yml
 
 .PHONY: help pull ps purge \
 	update-lemonade-configs \
+	up down logs config resolve-stack-target \
 	up-cpu down-cpu logs-cpu config-cpu \
 	up-amd-rocm down-amd-rocm logs-amd-rocm config-amd-rocm \
 	up-amd-vulkan down-amd-vulkan logs-amd-vulkan config-amd-vulkan \
@@ -53,6 +54,7 @@ help:
 	@echo "  NPU overlay    -> /dev/accel/accel0"
 	@echo ""
 	@echo "Main targets:"
+	@echo "  up | down | logs | config (auto-detect best available stack)"
 	@echo "  up-cpu"
 	@echo "  up-amd-rocm | up-amd-vulkan"
 	@echo "  up-amd-rocm-npu | up-amd-vulkan-npu"
@@ -60,6 +62,10 @@ help:
 	@echo "  up-wsl-rocm | up-wsl-vulkan"
 	@echo "  up-wsl-cuda"
 	@echo "  up-wsl-rocm-npu | up-wsl-vulkan-npu"
+	@echo ""
+	@echo "Auto-detection priority:"
+	@echo "  Native: AMD ROCm+NPU > AMD ROCm > NVIDIA CUDA > AMD Vulkan+NPU > AMD Vulkan > CPU"
+	@echo "  WSL:    NVIDIA CUDA > AMD ROCm+NPU > AMD ROCm > CPU"
 	@echo "  update-lemonade-configs"
 
 update-lemonade-configs:
@@ -73,6 +79,73 @@ ps:
 
 purge:
 	$(COMPOSE) $(BASE) down -v --remove-orphans
+
+# Prints the best stack target for ACTION=up|down|logs|config (defaults to up).
+resolve-stack-target:
+	@action="$(if $(ACTION),$(ACTION),up)"; \
+	is_wsl=0; \
+	if [ -n "$$WSL_INTEROP" ] || \
+		grep -qiE "(microsoft|wsl)" /proc/sys/kernel/osrelease 2>/dev/null || \
+		grep -qiE "(microsoft|wsl)" /proc/version 2>/dev/null; then \
+		is_wsl=1; \
+	fi; \
+	has_npu=0; [ -e /dev/accel/accel0 ] && has_npu=1; \
+	has_rocm=0; [ -e /dev/kfd ] && has_rocm=1; \
+	has_vulkan=0; [ -d /dev/dri ] && has_vulkan=1; \
+	has_dxg=0; [ -e /dev/dxg ] && has_dxg=1; \
+	has_nvidia=0; \
+	if command -v nvidia-smi >/dev/null 2>&1 || [ -e /dev/nvidiactl ] || [ -e /proc/driver/nvidia/version ]; then \
+		has_nvidia=1; \
+	fi; \
+	target="$$action-cpu"; \
+	if [ "$$is_wsl" -eq 1 ]; then \
+		if [ "$$has_nvidia" -eq 1 ]; then \
+			target="$$action-wsl-cuda"; \
+		elif [ "$$has_dxg" -eq 1 ]; then \
+			if [ "$$has_npu" -eq 1 ]; then \
+				target="$$action-wsl-rocm-npu"; \
+			else \
+				target="$$action-wsl-rocm"; \
+			fi; \
+		fi; \
+	else \
+		if [ "$$has_rocm" -eq 1 ]; then \
+			if [ "$$has_npu" -eq 1 ]; then \
+				target="$$action-amd-rocm-npu"; \
+			else \
+				target="$$action-amd-rocm"; \
+			fi; \
+		elif [ "$$has_nvidia" -eq 1 ]; then \
+			target="$$action-nvidia"; \
+		elif [ "$$has_vulkan" -eq 1 ]; then \
+			if [ "$$has_npu" -eq 1 ]; then \
+				target="$$action-amd-vulkan-npu"; \
+			else \
+				target="$$action-amd-vulkan"; \
+			fi; \
+		fi; \
+	fi; \
+	echo "$$target"
+
+up:
+	@target="$$($(MAKE) --no-print-directory resolve-stack-target ACTION=up)"; \
+	echo "Auto-selected target: $$target"; \
+	$(MAKE) --no-print-directory "$$target"
+
+down:
+	@target="$$($(MAKE) --no-print-directory resolve-stack-target ACTION=down)"; \
+	echo "Auto-selected target: $$target"; \
+	$(MAKE) --no-print-directory "$$target"
+
+logs:
+	@target="$$($(MAKE) --no-print-directory resolve-stack-target ACTION=logs)"; \
+	echo "Auto-selected target: $$target"; \
+	$(MAKE) --no-print-directory "$$target"
+
+config:
+	@target="$$($(MAKE) --no-print-directory resolve-stack-target ACTION=config)"; \
+	echo "Auto-selected target: $$target"; \
+	$(MAKE) --no-print-directory "$$target"
 
 # CPU
 up-cpu:

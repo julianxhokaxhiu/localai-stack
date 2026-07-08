@@ -180,6 +180,35 @@ make down-nvidia
 
 ## Useful Operations
 
+Auto-detect and start the best stack for the current host capabilities:
+
+```bash
+make up
+```
+
+Auto-detect and stop the same stack family:
+
+```bash
+make down
+```
+
+Auto-detect and tail logs for the best stack:
+
+```bash
+make logs
+```
+
+Auto-detect and render merged Compose config for the best stack:
+
+```bash
+make config
+```
+
+Detection priority:
+
+- Native Linux: AMD ROCm + NPU -> AMD ROCm -> NVIDIA CUDA -> AMD Vulkan + NPU -> AMD Vulkan -> CPU
+- WSL: NVIDIA CUDA -> AMD ROCm + NPU -> AMD ROCm -> CPU
+
 Show running services:
 
 ```bash
