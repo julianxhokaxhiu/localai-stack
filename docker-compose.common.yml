@@ -1,15 +1,15 @@
 services:
   lemonade:
-    image: ghcr.io/lemonade-sdk/lemonade-server:v10.10.0
+    image: ghcr.io/lemonade-sdk/lemonade-server:v11.0.0
     ports:
       - "13305:13305"
     volumes:
       # Persist downloaded models
-      - lemonade-cache:/root/.cache/huggingface
+      - lemonade-cache:/opt/lemonade/.cache/huggingface
       # Persist llama binaries
       - lemonade-llama:/opt/lemonade/llama
       # Persist model options and other backend binaries
-      - lemonade-recipe:/root/.cache/lemonade
+      - lemonade-recipe:/opt/lemonade/.cache/lemonade
     restart: unless-stopped
 
   openwebui:
