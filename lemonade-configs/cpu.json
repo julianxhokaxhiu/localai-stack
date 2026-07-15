@@ -8,6 +8,9 @@
   "moonshine": {
     "backend": "cpu"
   },
+  "onnxruntime": {
+    "backend": "cpu"
+  },
   "sdcpp": {
     "backend": "cpu"
   },
