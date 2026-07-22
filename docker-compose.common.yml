@@ -1,6 +1,6 @@
 services:
   lemonade:
-    image: ghcr.io/lemonade-sdk/lemonade-server:v11.0.0
+    image: ghcr.io/lemonade-sdk/lemonade-server:v11.5.0
     ports:
       - "13305:13305"
     volumes:
