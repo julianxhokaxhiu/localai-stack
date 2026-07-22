@@ -1,6 +1,8 @@
 services:
   lemonade:
     image: ghcr.io/lemonade-sdk/lemonade-server:v11.5.0
+    environment:
+      LEMONADE_ALLOWED_ORIGINS: "*"
     ports:
       - "13305:13305"
     volumes:
