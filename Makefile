@@ -20,7 +20,7 @@ NPU = -f docker-compose.npu.yml
 
 .SILENT:
 
-.PHONY: help pull ps purge \
+.PHONY: help pull ps purge cleanup \
 	update-lemonade-configs \
 	up down logs config resolve-stack-target \
 	up-cpu down-cpu logs-cpu config-cpu \
@@ -55,6 +55,7 @@ help:
 	@echo ""
 	@echo "Main targets:"
 	@echo "  up | down | logs | config (auto-detect best available stack)"
+	@echo "  cleanup (prune unused Docker images and volumes)"
 	@echo "  up-cpu"
 	@echo "  up-amd-rocm | up-amd-vulkan"
 	@echo "  up-amd-rocm-npu | up-amd-vulkan-npu"
@@ -79,6 +80,10 @@ ps:
 
 purge:
 	$(COMPOSE) $(BASE) down -v --remove-orphans
+
+cleanup:
+	docker image prune -af
+	docker volume prune -af
 
 # Prints the best stack target for ACTION=up|down|logs|config (defaults to up).
 resolve-stack-target:
