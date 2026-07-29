@@ -5,6 +5,12 @@ services:
       - lemonade-flm:/opt/lemonade/.config/flm/models
     devices:
       - /dev/accel/accel0:/dev/accel/accel0
+    # /dev/accel/accel0 is owned by root:root on the host with group-read/write
+    # permissions (mode 0660). The lemonade image runs as an unprivileged user
+    # (UID 10001), so grant it supplementary access to GID 0 (root group) to
+    # allow opening the device without requiring any changes on the host.
+    group_add:
+      - "0"
 
 volumes:
   lemonade-flm:
