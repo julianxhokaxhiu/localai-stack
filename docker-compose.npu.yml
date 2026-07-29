@@ -1,4 +1,16 @@
 services:
+  # /opt/lemonade/.config/flm/models doesn't exist in the lemonade image, so
+  # Docker creates the lemonade-flm volume root-owned (0755) on first use.
+  # The lemonade service runs as an unprivileged user (UID 10001, GID 999) and
+  # can't write into it, causing "Permission denied" errors from FLM. Fix the
+  # ownership here, as root, before the main service starts.
+  lemonade-flm-init:
+    image: ghcr.io/lemonade-sdk/lemonade-server:v11.5.0
+    user: root
+    entrypoint: ["sh", "-c", "mkdir -p /opt/lemonade/.config/flm/models && chown -R 10001:999 /opt/lemonade/.config/flm/models"]
+    volumes:
+      - lemonade-flm:/opt/lemonade/.config/flm/models
+
   lemonade:
     volumes:
       # Persist fastflow models
@@ -11,6 +23,9 @@ services:
     # allow opening the device without requiring any changes on the host.
     group_add:
       - "0"
+    depends_on:
+      lemonade-flm-init:
+        condition: service_completed_successfully
 
 volumes:
   lemonade-flm:
