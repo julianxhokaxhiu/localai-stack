@@ -4,9 +4,9 @@ services:
       - sh
       - -lc
       - |
-        if [ ! -f /root/.cache/lemonade/config.json ]; then
-          cp /root/.cache/lemonade/.seed-config.json /root/.cache/lemonade/config.json
+        if [ ! -f /opt/lemonade/.cache/lemonade/config.json ]; then
+          cp /opt/lemonade/.cache/lemonade/.seed-config.json /opt/lemonade/.cache/lemonade/config.json
         fi
         exec ./lemond --host 0.0.0.0
     volumes:
-      - ./lemonade-configs/cpu.json:/root/.cache/lemonade/.seed-config.json:ro
+      - ./lemonade-configs/cpu.json:/opt/lemonade/.cache/lemonade/.seed-config.json:ro

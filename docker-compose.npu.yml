@@ -2,7 +2,7 @@ services:
   lemonade:
     volumes:
       # Persist fastflow models
-      - lemonade-flm:/root/.config/flm/models
+      - lemonade-flm:/opt/lemonade/.config/flm/models
     devices:
       - /dev/accel/accel0:/dev/accel/accel0
 
