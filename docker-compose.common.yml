@@ -16,7 +16,7 @@ services:
 
   openwebui:
     # Make sure to set Function Calling to NATIVE, see https://github.com/open-webui/open-webui/issues/25585#issuecomment-4793385763
-    image: ghcr.io/open-webui/open-webui:v0.10.2-slim
+    image: ghcr.io/open-webui/open-webui:v0.11.0-slim
     environment:
       OPENAI_API_BASE_URL: http://lemonade:13305/api/v1
       IMAGES_OPENAI_API_BASE_URL: http://lemonade:13305/api/v1
