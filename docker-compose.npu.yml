@@ -5,7 +5,7 @@ services:
   # can't write into it, causing "Permission denied" errors from FLM. Fix the
   # ownership here, as root, before the main service starts.
   lemonade-flm-init:
-    image: ghcr.io/lemonade-sdk/lemonade-server:v11.5.0
+    image: ghcr.io/lemonade-sdk/lemonade-server:v11.5.2
     user: root
     entrypoint: ["sh", "-c", "mkdir -p /opt/lemonade/.config/flm/models && chown -R 10001:999 /opt/lemonade/.config/flm/models"]
     volumes:
