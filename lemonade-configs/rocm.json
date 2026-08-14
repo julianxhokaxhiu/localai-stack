@@ -11,6 +11,9 @@
   "sdcpp": {
     "backend": "rocm"
   },
+  "thenoise": {
+    "backend": "rocm"
+  },
   "thinksound": {
     "backend": "rocm"
   },
