@@ -2,6 +2,9 @@
   "acestep": {
     "backend": "rocm"
   },
+  "ds4": {
+    "backend": "rocm"
+  },
   "llamacpp": {
     "backend": "rocm"
   },
