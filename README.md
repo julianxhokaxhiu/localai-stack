@@ -1,6 +1,6 @@
 # localai-stack
 
-Docker Compose stack for Lemonade Server/Open WebUI/SearXNG with support for CPUs, AMD, Nvidia, Intel GPUs and NPU hardware.
+Docker Compose stack for Lemonade Server with support for CPUs, AMD, Nvidia, Intel GPUs and NPU hardware.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ Docker Compose stack for Lemonade Server/Open WebUI/SearXNG with support for CPU
 
 Every command is built from:
 
-- Base (OpenWebUI + Lemonade + SearXNG): `docker-compose.common.yml`
+- Base (Lemonade): `docker-compose.common.yml`
 - Platform (AMD):
   - Native Linux AMD: `docker-compose.gpu.amd.yml`
   - AMD on WSL: `docker-compose.gpu.amd.wsl.yml`
@@ -254,5 +254,4 @@ make purge
 
 When the stack is up:
 
-- OpenWebUI is exposed on `http://localhost`
 - Lemonade UI is exposed on `http://localhost:13305/`
