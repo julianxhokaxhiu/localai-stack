@@ -178,6 +178,20 @@ Stop:
 make down-nvidia
 ```
 
+### 11) NPU only
+
+Start:
+
+```bash
+make up-npu
+```
+
+Stop:
+
+```bash
+make down-npu
+```
+
 ## Useful Operations
 
 Auto-detect and start the best stack for the current host capabilities:
@@ -206,8 +220,8 @@ make config
 
 Detection priority:
 
-- Native Linux: AMD ROCm + NPU -> AMD ROCm -> NVIDIA CUDA -> AMD Vulkan + NPU -> AMD Vulkan -> CPU
-- WSL: NVIDIA CUDA -> AMD ROCm + NPU -> AMD ROCm -> CPU
+- Native Linux: AMD ROCm + NPU -> AMD ROCm -> NVIDIA CUDA -> AMD Vulkan + NPU -> AMD Vulkan -> NPU only -> CPU
+- WSL: NVIDIA CUDA -> AMD ROCm + NPU -> AMD ROCm -> NPU only -> CPU
 
 Show running services:
 
@@ -220,7 +234,7 @@ Follow logs for active AMD stack:
 ```bash
 make logs-amd-rocm
 # or logs-amd-vulkan, logs-amd-rocm-npu, logs-amd-vulkan-npu
-# or logs-wsl-rocm, logs-wsl-vulkan, logs-wsl-rocm-npu, logs-wsl-vulkan-npu
+# or logs-wsl-rocm, logs-wsl-vulkan, logs-wsl-rocm-npu, logs-wsl-vulkan-npu, logs-npu
 ```
 
 Follow logs for NVIDIA stack:

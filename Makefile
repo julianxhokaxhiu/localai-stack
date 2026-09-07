@@ -29,6 +29,7 @@ NPU = -f docker-compose.npu.yml
 	up-amd-rocm-npu down-amd-rocm-npu logs-amd-rocm-npu config-amd-rocm-npu \
 	up-amd-vulkan-npu down-amd-vulkan-npu logs-amd-vulkan-npu config-amd-vulkan-npu \
 	up-nvidia down-nvidia logs-nvidia config-nvidia \
+	up-npu down-npu logs-npu config-npu \
 	up-wsl-rocm down-wsl-rocm logs-wsl-rocm config-wsl-rocm \
 	up-wsl-vulkan down-wsl-vulkan logs-wsl-vulkan config-wsl-vulkan \
 	up-wsl-cuda down-wsl-cuda logs-wsl-cuda config-wsl-cuda \
@@ -61,6 +62,7 @@ help:
 	@echo "  up-amd-rocm | up-amd-vulkan"
 	@echo "  up-amd-rocm-npu | up-amd-vulkan-npu"
 	@echo "  up-nvidia"
+	@echo "  up-npu"
 	@echo "  up-wsl-rocm | up-wsl-vulkan"
 	@echo "  up-wsl-cuda"
 	@echo "  up-wsl-rocm-npu | up-wsl-vulkan-npu"
@@ -115,6 +117,8 @@ resolve-stack-target:
 			else \
 				target="$$action-wsl-rocm"; \
 			fi; \
+		elif [ "$$has_npu" -eq 1 ]; then \
+			target="$$action-npu"; \
 		fi; \
 	else \
 		if [ "$$has_rocm" -eq 1 ]; then \
@@ -131,6 +135,8 @@ resolve-stack-target:
 			else \
 				target="$$action-amd-vulkan"; \
 			fi; \
+		elif [ "$$has_npu" -eq 1 ]; then \
+			target="$$action-npu"; \
 		fi; \
 	fi; \
 	echo "$$target"
@@ -230,6 +236,19 @@ logs-nvidia:
 
 config-nvidia:
 	$(COMPOSE) $(BASE) $(NVIDIA) $(CUDA) config
+
+# NPU only
+up-npu:
+	$(COMPOSE) $(BASE) $(NPU) up -d
+
+down-npu:
+	$(COMPOSE) $(BASE) $(NPU) down
+
+logs-npu:
+	$(COMPOSE) $(BASE) $(NPU) logs -f
+
+config-npu:
+	$(COMPOSE) $(BASE) $(NPU) config
 
 # AMD WSL + backend
 up-wsl-rocm:
