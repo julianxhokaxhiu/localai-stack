@@ -1,6 +1,6 @@
 services:
   lemonade:
-    image: ghcr.io/lemonade-sdk/lemonade-server:v2026.45.3
+    image: ghcr.io/lemonade-sdk/lemonade-server:candidate-v2026.46.1
     environment:
       LEMONADE_ALLOWED_ORIGINS: "*"
     ports:
