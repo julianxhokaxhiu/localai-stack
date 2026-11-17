@@ -180,6 +180,13 @@ make down-nvidia
 
 ### 11) NPU only
 
+To override the FastFlowLM release for any NPU stack, set `FLM_VERSION` in
+`docker-compose.npu.yml`, for example `FLM_VERSION: "v1.0.11"`, or export
+`FLM_VERSION` before running `make`. Leave it empty to use the image's bundled
+version. Recreate the stack after changing it; Lemonade will install the
+selected backend when it is next needed. Versions other than the bundled one
+may not be compatible.
+
 Start:
 
 ```bash

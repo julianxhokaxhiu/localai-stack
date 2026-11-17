@@ -12,6 +12,45 @@ services:
       - lemonade-flm:/opt/lemonade/.config/flm/models
 
   lemonade:
+    environment:
+      # Leave empty to use the version bundled with the image.
+      FLM_VERSION: "${FLM_VERSION:-}"
+    entrypoint:
+      - sh
+      - -c
+      - |
+        set -eu
+        if [ -n "$$FLM_VERSION" ]; then
+          case "$$FLM_VERSION" in
+            v[0-9]*) ;;
+            *) echo "FLM_VERSION must be a release tag starting with v and a digit" >&2; exit 1 ;;
+          esac
+          case "$$FLM_VERSION" in
+            *[!a-zA-Z0-9._+-]*) echo "FLM_VERSION contains invalid characters" >&2; exit 1 ;;
+          esac
+          versions=/opt/lemonade/resources/backend_versions.json
+          tmp="$$(mktemp "$${versions}.XXXXXX")"
+          if ! awk -v version="$$FLM_VERSION" '
+            /^  "flm": \{$$/ { in_flm = 1; blocks++ }
+            in_flm && /^    "npu": "[^"]+"[,]?$$/ {
+              sub(/"npu": "[^"]+"/, "\"npu\": \"" version "\"")
+              matches++
+            }
+            in_flm && /^  \}[,]?$$/ { in_flm = 0 }
+            { print }
+            END {
+              if (blocks != 1 || matches != 1 || in_flm) exit 1
+            }
+          ' "$$versions" > "$$tmp"; then
+            rm -f "$$tmp"
+            echo "Failed to update flm.npu in $$versions" >&2
+            exit 1
+          fi
+          mv "$$tmp" "$$versions"
+        fi
+        exec "$$@"
+      - --
+    command: ["./lemond", "--host", "0.0.0.0"]
     volumes:
       # Persist fastflow models
       - lemonade-flm:/opt/lemonade/.config/flm/models
