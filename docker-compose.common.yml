@@ -1,7 +1,8 @@
 services:
   lemonade:
-    image: ghcr.io/lemonade-sdk/lemonade-server:candidate-v2026.47.1
+    image: ghcr.io/julianxhokaxhiu/lemonade-server:sha-dd13af8e
     environment:
+      STRATA_ENGINE_NICE: "0"
       LEMONADE_ALLOWED_ORIGINS: "*"
     ports:
       - "13305:13305"
