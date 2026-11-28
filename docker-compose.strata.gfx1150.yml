@@ -1,0 +1,38 @@
+services:
+  lemonade:
+    command:
+      - sh
+      - -lc
+      - |
+        set -e
+        if [ ! -s /opt/lemonade/.cache/lemonade/config.json ]; then
+          cp /opt/lemonade/.cache/lemonade/.seed-config.json /opt/lemonade/.cache/lemonade/config.json
+        fi
+        /opt/lemonade/.cache/lemonade/bin/strata/rocm/control/python/bin/python3 -E -s /opt/strata-config.py
+        exec ./lemond --host 0.0.0.0
+    volumes:
+      - type: bind
+        source: ./utils/strata-config.py
+        target: /opt/strata-config.py
+        read_only: true
+      - type: bind
+        source: ./lemonade-configs/strata-gfx1150.json
+        target: /opt/strata-config.json
+        read_only: true
+      - type: bind
+        source: ./.strata/engine
+        target: /opt/strata-engine
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./.strata/control
+        target: /opt/lemonade/.cache/lemonade/bin/strata/rocm/control
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./.strata/version.txt
+        target: /opt/lemonade/.cache/lemonade/bin/strata/rocm/version.txt
+        read_only: true
+        bind:
+          create_host_path: false

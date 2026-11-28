@@ -1,0 +1,7 @@
+{
+  "strata": {
+    "runtime": "qwen",
+    "backend": "rocm",
+    "rocm_bin": "/opt/strata-engine/strata"
+  }
+}

@@ -38,6 +38,28 @@ Device paths are layered automatically by compose overlay:
 
 ## AMD Combinations (All Cases)
 
+### gfx1150 Strata Qwen engine
+
+On Linux x86_64 ROCm hosts where KFD sysfs reports only gfx1150 GPUs, the
+Makefile adds a separate custom Strata overlay. Before starting ROCm, run:
+
+```bash
+make setup-strata
+```
+
+This requires `curl`, `sha256sum`, `tar`, and Docker, and stores the
+verified engine and Control bundles in `.strata/`. Setup uses Docker to make
+Control writable by container UID 10001. Other GPU architectures and non-ROCm
+targets do not use this overlay. The LXC must expose
+`/sys/class/kfd/kfd/topology/nodes` as well as the GPU devices; if KFD sysfs
+is unavailable, or reports mixed GPU architectures, the overlay is not enabled.
+
+The overlay merges the custom Strata fields into the persisted config, so
+existing settings are retained. If the same volume is later used without the
+gfx1150 overlay, remove `strata.rocm_bin` from its persisted
+`/opt/lemonade/.cache/lemonade/config.json` before starting ROCm on another
+GPU. This prevents a stale reference to the unmounted custom engine.
+
 ### 1) Native AMD + ROCm
 
 Start:

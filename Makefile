@@ -7,6 +7,7 @@ ROCM = -f docker-compose.backend.rocm.yml
 VULKAN = -f docker-compose.backend.vulkan.yml
 CUDA = -f docker-compose.backend.cuda.yml
 ROCM_WSL = -f docker-compose.backend.rocm.wsl.yml
+STRATA_GFX1150 = $(shell sh ./utils/detect-gfx1150.sh)
 VULKAN_WSL = -f docker-compose.backend.vulkan.wsl.yml
 CUDA_WSL = -f docker-compose.backend.cuda.wsl.yml
 
@@ -21,7 +22,7 @@ NPU = -f docker-compose.npu.yml
 .SILENT:
 
 .PHONY: help pull ps purge cleanup upgrade \
-	update-lemonade-configs \
+	update-lemonade-configs setup-strata \
 	up down logs config resolve-stack-target \
 	up-cpu down-cpu logs-cpu config-cpu \
 	up-amd-rocm down-amd-rocm logs-amd-rocm config-amd-rocm \
@@ -71,9 +72,13 @@ help:
 	@echo "  Native: AMD ROCm+NPU > AMD ROCm > NVIDIA CUDA > AMD Vulkan+NPU > AMD Vulkan > CPU"
 	@echo "  WSL:    NVIDIA CUDA > AMD ROCm+NPU > AMD ROCm > CPU"
 	@echo "  update-lemonade-configs"
+	@echo "  setup-strata (prepare the gfx1150 Strata bundles)"
 
 update-lemonade-configs:
 	./utils/update_lemonade_configs.sh
+
+setup-strata:
+	sh ./utils/setup-strata.sh
 
 pull:
 	$(COMPOSE) $(BASE) pull
@@ -176,7 +181,7 @@ config-cpu:
 
 # AMD native + backend
 up-amd-rocm:
-	$(COMPOSE) $(BASE) $(AMD_NATIVE) $(ROCM) up -d
+	$(COMPOSE) $(BASE) $(AMD_NATIVE) $(ROCM) $(STRATA_GFX1150) up -d
 
 down-amd-rocm:
 	$(COMPOSE) $(BASE) $(AMD_NATIVE) $(ROCM) down
@@ -185,7 +190,7 @@ logs-amd-rocm:
 	$(COMPOSE) $(BASE) $(AMD_NATIVE) $(ROCM) logs -f
 
 config-amd-rocm:
-	$(COMPOSE) $(BASE) $(AMD_NATIVE) $(ROCM) config
+	$(COMPOSE) $(BASE) $(AMD_NATIVE) $(ROCM) $(STRATA_GFX1150) config
 
 up-amd-vulkan:
 	$(COMPOSE) $(BASE) $(AMD_NATIVE) $(VULKAN) up -d
@@ -201,7 +206,7 @@ config-amd-vulkan:
 
 # AMD native + NPU + backend
 up-amd-rocm-npu:
-	$(COMPOSE) $(BASE) $(NPU) $(AMD_NATIVE) $(ROCM) up -d
+	$(COMPOSE) $(BASE) $(NPU) $(AMD_NATIVE) $(ROCM) $(STRATA_GFX1150) up -d
 
 down-amd-rocm-npu:
 	$(COMPOSE) $(BASE) $(NPU) $(AMD_NATIVE) $(ROCM) down
@@ -210,7 +215,7 @@ logs-amd-rocm-npu:
 	$(COMPOSE) $(BASE) $(NPU) $(AMD_NATIVE) $(ROCM) logs -f
 
 config-amd-rocm-npu:
-	$(COMPOSE) $(BASE) $(NPU) $(AMD_NATIVE) $(ROCM) config
+	$(COMPOSE) $(BASE) $(NPU) $(AMD_NATIVE) $(ROCM) $(STRATA_GFX1150) config
 
 up-amd-vulkan-npu:
 	$(COMPOSE) $(BASE) $(NPU) $(AMD_NATIVE) $(VULKAN) up -d
@@ -252,7 +257,7 @@ config-npu:
 
 # AMD WSL + backend
 up-wsl-rocm:
-	$(COMPOSE) $(BASE) $(AMD_WSL) $(ROCM_WSL) up -d
+	$(COMPOSE) $(BASE) $(AMD_WSL) $(ROCM_WSL) $(STRATA_GFX1150) up -d
 
 down-wsl-rocm:
 	$(COMPOSE) $(BASE) $(AMD_WSL) $(ROCM_WSL) down
@@ -261,7 +266,7 @@ logs-wsl-rocm:
 	$(COMPOSE) $(BASE) $(AMD_WSL) $(ROCM_WSL) logs -f
 
 config-wsl-rocm:
-	$(COMPOSE) $(BASE) $(AMD_WSL) $(ROCM_WSL) config
+	$(COMPOSE) $(BASE) $(AMD_WSL) $(ROCM_WSL) $(STRATA_GFX1150) config
 
 up-wsl-vulkan:
 	$(COMPOSE) $(BASE) $(AMD_WSL) $(VULKAN_WSL) up -d
@@ -289,7 +294,7 @@ config-wsl-cuda:
 
 # AMD WSL + NPU + backend
 up-wsl-rocm-npu:
-	$(COMPOSE) $(BASE) $(NPU) $(AMD_WSL) $(ROCM_WSL) up -d
+	$(COMPOSE) $(BASE) $(NPU) $(AMD_WSL) $(ROCM_WSL) $(STRATA_GFX1150) up -d
 
 down-wsl-rocm-npu:
 	$(COMPOSE) $(BASE) $(NPU) $(AMD_WSL) $(ROCM_WSL) down
@@ -298,7 +303,7 @@ logs-wsl-rocm-npu:
 	$(COMPOSE) $(BASE) $(NPU) $(AMD_WSL) $(ROCM_WSL) logs -f
 
 config-wsl-rocm-npu:
-	$(COMPOSE) $(BASE) $(NPU) $(AMD_WSL) $(ROCM_WSL) config
+	$(COMPOSE) $(BASE) $(NPU) $(AMD_WSL) $(ROCM_WSL) $(STRATA_GFX1150) config
 
 up-wsl-vulkan-npu:
 	$(COMPOSE) $(BASE) $(NPU) $(AMD_WSL) $(VULKAN_WSL) up -d
